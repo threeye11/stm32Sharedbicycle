@@ -1,0 +1,59 @@
+# dot files
+/.vscode/launch.json
+/.settings
+/.eide/log
+/.eide.usr.ctx.json
+
+# project out
+/build
+/bin
+/obj
+/out
+
+# eide template
+*.ept
+*.eide-template
+
+# ======================================
+# Keil5 工程专用 .gitignore
+# 自动忽略编译文件、调试文件、临时文件
+# ======================================
+
+# 1. Keil 编译生成的核心文件 (最重要)
+*.axf        # 调试可执行文件
+*.hex        # 烧录固件文件
+*.bin        # 二进制固件
+*.elf        # 嵌入式链接文件
+*.lib        # 库文件
+*.o          # 目标文件
+*.obj        # 目标文件
+*.a          # 静态库
+
+# 2. Keil 工程编译中间/输出目录
+Objects/     # 编译输出目录（默认）
+Listings/   # 编译列表文件目录（默认）
+Output/     # 自定义输出目录
+Build/      # 自定义编译目录
+Debug/      # 调试输出目录
+Release/    # 发布编译目录
+*.dep       # 依赖文件
+*.map       # 内存映射文件
+
+# 3. Keil 编辑器/调试器临时文件
+*.uvguix     # 界面布局配置（个人本地配置，无需上传）
+*.uvoptx     # 调试器配置（个人本地配置）
+*.dbgconf    # 调试配置文件
+*.bak        # 备份文件
+*.log        # 日志文件
+
+# 4. 系统/IDE 自动生成的垃圾文件
+.DS_Store    # macOS 系统文件
+Thumbs.db   # Windows 缩略图缓存
+.vs/         # Visual Studio 配置
+.vscode/     # VS Code 配置
+*.swp        # Vim 临时文件
+
+# 5. 其他可忽略文件（可选）
+*.iex        # 中间文件
+*.sct        # 分散加载文件（如你自己修改过则删除此行）
+*.ini        # 配置文件
