@@ -1,0 +1,39 @@
+--cpu Cortex-M3 --scatter e:/大学嵌入式资料/TY实践课/2_温度、锁、电机节点/USER/build/Template/温度_锁_电机.sct --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols --info sizes --info totals --info unused --info veneers
+--list .\build\Template\温度_锁_电机.map
+.\build\Template\.obj\__\CORE\core_cm3.o
+.\build\Template\.obj\__\CORE\startup_stm32f10x_hd.o
+.\build\Template\.obj\__\HARDWARE\STMFLASH\stmflash.o
+.\build\Template\.obj\__\HARDWARE\gpio.o
+.\build\Template\.obj\__\HARDWARE\lcd.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\misc.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_adc.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_bkp.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_can.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_cec.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_crc.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_dac.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_dbgmcu.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_dma.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_exti.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_flash.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_fsmc.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_gpio.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_i2c.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_iwdg.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_pwr.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_rcc.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_rtc.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_sdio.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_spi.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_tim.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_usart.o
+.\build\Template\.obj\__\STM32F10x_FWLIB\src\stm32f10x_wwdg.o
+.\build\Template\.obj\__\SYSTEM\delay\delay.o
+.\build\Template\.obj\__\SYSTEM\exti\exti.o
+.\build\Template\.obj\__\SYSTEM\spi\spi.o
+.\build\Template\.obj\__\SYSTEM\sys\sys.o
+.\build\Template\.obj\__\SYSTEM\timer\timer.o
+.\build\Template\.obj\__\SYSTEM\usart\usart.o
+.\build\Template\.obj\main.o
+.\build\Template\.obj\stm32f10x_it.o
+.\build\Template\.obj\system_stm32f10x.o -o .\build\Template\温度_锁_电机.axf

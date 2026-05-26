@@ -10,7 +10,7 @@
 #include "exti.h"
 #include "stmflash.h"
 
-#define FLASH_SAVE_ADDR  0X0807F000		//ÉèÖÃFLASH ±£´æµØÖ·(±ØĞëÎªÅ¼Êı£¬ÇÒÆäÖµÒª´óÓÚ±¾´úÂëËùÕ¼ÓÃFLASHµÄ´óĞ¡+0X08000000)
+#define FLASH_SAVE_ADDR  0X0807F000		//ÉèÖÃFLASH ±£´æµØÖ·
 
 #define   OPEN 				1
 #define   CLOSE       0
@@ -19,6 +19,7 @@
 #define   Motor_RUN   {PCout(3) = 1;}
 #define   Motor_STOP   {PCout(3) = 0;}
 
+//±äÁ¿
 uint8_t x_start = 10;
 bool Flag_0WiFi_1ZigBee = 0;
 bool Flag_car_status = CLOSE;
@@ -26,43 +27,31 @@ uint32_t Value_Accumulated_Mileage_current_order = 0;
 uint16_t Light_threshold = 200;          // ¹âÕÕãĞÖµ£¬Ä¬ÈÏÎª200 Lux£¬¿ÉÍ¨¹ıÉÏÏÂ¼üµ÷½Ú
 bool Flag_manual_light_mode = 0;         //ÊÖ¶¯µÆ¹âÄ£Ê½±êÖ¾£¬0=×Ô¶¯£¬1=ÊÖ¶¯
 uint32_t Value_Accumulated_Mileage_total = 0;
-unsigned char Read_Humiture_CMD[8]		={0x01,0x03,0x00,0x00,0x00,0x02,0xC4,0x0B};//¶ÁÈ¡ÎÂÊª¶ÈÊı¾İµÄÃüÁî
 unsigned char Read_Illuminance_CMD[8] = {0x01,0x03,0x00,0x00,0x00,0x02,0xC4,0x0B};  //¶ÁÈ¡¹âÕÕ´«¸ĞÆ÷µÄ Modbus ÃüÁî
 char Str_Light_threshold[4] = {'5','0','0',0};
 char Str_RTC_time[9] = {'0','0',':','0','0',':','0','0',0};
 char Light_value_str[7] = {0};
 unsigned long Light_value = 0, temp_u32 = 0;   //µ±Ç°¹âÕÕÖµ£¨Lux£©
 bool Flag_LED_ONOFF = 0;
-bool Flag_ON_OFF_left_light = 0;
-bool Flag_ON_OFF_right_light = 0;
-uint8_t Flag_type_Low_High_close_light = 0;
-bool Flag_auto_light = 0;
 char Data_buf_WiFi_Light[17] = {"Hwd04#IL:000000T"};
 char Str_Value_Accumulated_Mileage_current_order[6] = {'0','0','.','0','0',0};
 char Str_Value_Accumulated_Mileage_total[7] = {0};
 uint16_t Buf_Save_Flash[3] = {0};
 bool Flag_LED3_ONOFF = 0;
 bool Flag_blink_ONOFF = 0;
-unsigned int Tem_value = 0,Hum_value = 0;
-uint16_t Value_threshold 																	= 300;//ãĞÖµ£¬Ä¬ÈÏÎª30.0¡æ
 bool Flag_Alarm = 0;//±¨¾¯±êÖ¾ÖÃÒ»
-bool Flag_allow_alarm = 1;//ÔÊĞíÀÛ¼Ó±¨¾¯´ÎÊı±êÖ¾ÊÇ·ñÖÃÒ»
-//uint16_t Count_times_Alarm = 0;
-//char Str_Count_times_Alarm[4] = {'0','0','0',0};
-char Str_Value_threshold[5] = {'0','0','.','0',0};
 char Temp_value_str[7];
-char Hum_value_str[6];
 char Temp_max_value_str[5] = {0};
 uint16_t Max_temperature = 0;
 uint8_t Max_voltage = 0;
 uint8_t Count_Value_Accumulated_temes_alarm = 0;
 char Str_Count_Value_Accumulated_temes_alarm[4] = {0};
-uint16_t Accumulated_Mileage_total = 0;
 char Data_buf_WiFi[50];
 char Data_buf_ZigBee[70];
-unsigned char Flag_Sonser_Device_onoff = 0;
 char AT_send_buf[20];
 unsigned char x,flag = 1;
+
+//º¯ÊıÉùÃ÷
 void copy_str(char* des,char* src,unsigned char len);
 void wait_OK(void);
 void wait_dayuhao(void);
@@ -80,6 +69,8 @@ void Renew_Flash(void);//¸üĞÂ´æÈëFLASHÀïÃæµÄÊı¾İ£¬°üÀ¨³µÁ¾ÀÛ¼Æ×ÜÀï³Ì¡¢ÀúÊ·ÎÂ¶È¹ı
 void FLASH_data_init(void);//FLASH³õÊ¼»¯
 void Patrol_inspection_mode_process(void);//Ñ²¼ìÄ£Ê½´¦Àí
 void Light_Control(void);
+
+//³õÊ¼»¯
 int main(void)
 {
 	GPIO_Configuration();				//ËøºÍµç»úµÄGPIO³õÊ¼»¯
@@ -109,6 +100,8 @@ int main(void)
 		Mileage_process();//Àï³ÌÊıÀÛ¼Ó´¦Àí	
 	}
 }
+
+//ÆäËûÊ¹ÓÃº¯Êı
 void FLASH_data_init(void)//FLASH³õÊ¼»¯
 {
 	if(KEY_down == 0)//Èç¹ûÊÇ°´×ÅÏÂ°´¼ü½øĞĞÉè±¸¿ª»ú»òÖØÆô£¬Ôò¶ÔFLASHÄÚ´æ·ÅµÄÓÃ»§Êı¾İ½øĞĞÇåÁã²Ù×÷
@@ -235,11 +228,6 @@ void Usart3_receive_process(void)
 }
 void Key_procsess(void)
 {
-	//°´¼ü¹¦ÄÜ£º
-	// - ÓÒ¼ü£ºÇĞ»»ÊÖ¶¯/×Ô¶¯µÆ¹âÄ£Ê½
-	// - ÉÏ¼ü/ÏÂ¼ü£ºµ±³µËø¹Ø±ÕÊ±£¬ÓÃÓÚµ÷½Ú¹âÕÕãĞÖµ£¨²½³¤10£¬·¶Î§0~999£©
-	// - ×ó¼ü£ºÇĞ»»WiFi/ZigBee£¨·ÇºËĞÄ¹¦ÄÜ£©
-	// ×¢Òâ£º³µËø¿ªÆôÊ±£¬ÉÏÏÂ¼ü¿ØÖÆµç»ú£¨·ÇµÆ¹â¹¦ÄÜ£¬µ«²»»á¿ªËø£©
 	if(KEY_value != key_free)
 	{
 		if(Flag_car_status == OPEN)
@@ -316,20 +304,9 @@ void Key_procsess(void)
 		KEY_value = key_free;
 	}
 }
-void Renew_Flash(void)//¸üĞÂ´æÈëFLASHÀïÃæµÄÊı¾İ£¬°üÀ¨³µÁ¾ÀÛ¼Æ×ÜÀï³Ì¡¢ÀúÊ·ÎÂ¶È¹ı¸ß¾¯±¨´ÎÊı
+void Renew_Flash(void)
 {
-	/*Òª´æ´¢µÄÊı¾İÄÚÈİ¾ÙÀı£¨16Î»Êı¾İ£©£º
-	Buf_Save_Flash[0]£º	´æ·ÅÀúÊ·×î¸ßÎÂ¶È£¬Êı¾İ¾ÙÀı£º802 £¨80.2¶È£©£»
-	Buf_Save_Flash[1]£º	¸ß8Î»´æ·ÅÀúÊ·×î¸ßµçÑ¹£¬Êı¾İ¾ÙÀı£º70 £¨70V£©£»
-											µÍ8Î»´æ·ÅÀúÊ·ÀÛ¼ÆÎÂ¶È¹ı¸ß¾¯±¨´ÎÊı£¬Êı¾İ¾ÙÀı£º123£¨123£©´Î£»
-	Buf_Save_Flash[2]£º	´æ·Å³µÁ¾ÀúÊ·×ÜÀÛ¼ÆÀï³Ì£¬Êı¾İ¾ÙÀı£º12345 £¨123.45KM£©¡£
-	
-	±äÁ¿Ãû£º
-	Max_temperature£º×î¸ßÎÂ¶È
-	Max_voltage£º×î¸ßµçÑ¹
-	Accumulated_temes_number_alarm£ºÀÛ¼ÆÎÂ¶È¹ı¸ß¾¯±¨´ÎÊı
-	Accumulated_Mileage_total£º×ÜÀÛ¼ÆÀï³Ì
-	*/
+
 	uint16_t temp_Buf[3] = {0};	
 	if(Buf_Save_Flash[0] < Max_temperature)
 	{
@@ -344,8 +321,6 @@ void Renew_Flash(void)//¸üĞÂ´æÈëFLASHÀïÃæµÄÊı¾İ£¬°üÀ¨³µÁ¾ÀÛ¼Æ×ÜÀï³Ì¡¢ÀúÊ·ÎÂ¶È¹ı¸
 	STMFLASH_Write(FLASH_SAVE_ADDR,(unsigned int*)temp_Buf,3);
 	delay_ms(1000);
 	STMFLASH_Read(FLASH_SAVE_ADDR,(unsigned int*)Buf_Save_Flash,3);//¶ÁÈ¡´æ·ÅÔÚFLASHµÄÓÃ»§Êı¾İ
-		
-	
 	Temp_max_value_str[0]	=	(char)(Buf_Save_Flash[0] % 1000 / 100 + '0');
 	Temp_max_value_str[1]	=	(char)(Buf_Save_Flash[0] % 100 / 10 + '0');
 	Temp_max_value_str[2]	=	'.';
@@ -364,16 +339,13 @@ void Renew_Flash(void)//¸üĞÂ´æÈëFLASHÀïÃæµÄÊı¾İ£¬°üÀ¨³µÁ¾ÀÛ¼Æ×ÜÀï³Ì¡¢ÀúÊ·ÎÂ¶È¹ı¸
 	Str_Count_Value_Accumulated_temes_alarm[2] = Count_Value_Accumulated_temes_alarm % 10 + '0';
 	
 	LCD_ShowString(x_start+16*11,10+3*7+16*7,"    ");
-//	LCD_ShowString(x_start+16*11,10+3*5+16*5,"      ");
 	LCD_ShowString(x_start+16*11,10+3*9+16*9,"   ");
   delay_ms(500);	
 	LCD_ShowString(x_start+16*11,10+3*7+16*7,Temp_max_value_str);//ÀúÊ·×î¸ßÎÂ¶È
-//	LCD_ShowString(x_start+16*11,10+3*5+16*5,Str_Value_Accumulated_Mileage_total);//ÀúÊ·ÀÛ¼ÆÀï³Ì£¨µôµç±£´æ£©	
 	LCD_ShowString(x_start+16*11,10+3*9+16*9,Str_Count_Value_Accumulated_temes_alarm);//ÀúÊ·ÎÂ¶È¹ı¸ß¾¯±¨´ÎÊı
 }
 void Mileage_process(void)
 {
-	// Àï³ÌÀÛ¼Æ£¬·ÇºËĞÄ¹¦ÄÜ£¬ºöÂÔ
 	if(Flag_state_Accumulated_Mileage == OPEN)
 	{
 		if(Flag_timer_Accumulated_Mileage_1S)
@@ -419,7 +391,6 @@ void Regularly_collect_data(void)
 		Flag_timer_2S = 0;
 		USART3TxData_hex(Read_Illuminance_CMD, 8);   // ·¢ËÍÃüÁî¶ÁÈ¡¹âÕÕÖµ
 
-		// ÒÔÏÂÎªÖ¸Ê¾µÆºÍÏÔÊ¾Ë¢ĞÂ£¬·ÇºËĞÄµÆ¹â¿ØÖÆÂß¼­
 		if(Flag_LED3_ONOFF)
 		{
 			Flag_LED3_ONOFF = 0;
@@ -629,7 +600,7 @@ void LCD_display_init(void)
 	LCD_DrawRectangle(0, 0, 320, 240);
 	LCD_ShowString(10,10,"Three");
 	LCD_ShowString(60,10+3*1+16*0,"Shared Bicycle System");
-	LCD_Show_Chinese16x16(x_start+16*5,10+3*2+16*2, "\xb3\xb5\xcb\xf8\xd7\xb4\xcc\xac\xa3\xba\xb9\xd8\xb1\xd5");
+	LCD_Show_Chinese16x16(x_start+16*5,10+3*2+16*2, "³µËø×´Ì¬£º¹Ø±Õ");
 	LCD_ShowString(x_start+16*5,10+3*3+16*3,"RTC Time:");
 	LCD_ShowString(x_start+16*11,10+3*3+16*3,"00:00:00");
 	LCD_ShowString(x_start+16*5,10+3*4+16*4,"light(Lux):");
@@ -639,7 +610,7 @@ void LCD_display_init(void)
 	LCD_ShowString(x_start+16*5,10+3*6+16*6,"Lighting Mode :");
 	LCD_ShowString(x_start+16*11,10+3*6+16*6,"Auto ");
 	LCD_ShowString(x_start+16*16,10+3*6+16*6,"OFF");
-	LCD_Show_Chinese16x16(x_start+16*0,10+3*11+16*11,"\xb5\xb1\xc7\xb0\xcd\xa8\xd0\xc5\xb7\xbd\xca\xbd\xa3\xba      \xc1\xac\xbd\xd3\xd6\xd0  \xc7\xd0\xbb\xbb");
+	LCD_Show_Chinese16x16(x_start+16*0,10+3*11+16*11,"µ±Ç°Í¨ĞÅ·½Ê½£º Á¬½ÓÖĞ ÇĞ»» ");
 	LCD_ShowString(x_start+16*7,10+3*11+16*11, "WiFi (");
 	LCD_ShowString(x_start+16*13,10+3*11+16*11, ")");
 
